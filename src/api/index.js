@@ -7,6 +7,7 @@ import stock from './stock';
 import review from './review';
 import cart from './cart';
 import product from './product';
+import subscription from './subscription';
 import sync from './sync';
 
 export default ({ config, db }) => {
@@ -35,6 +36,9 @@ export default ({ config, db }) => {
 
 	// mount the sync resource
 	api.use('/sync', sync({ config, db }))
+
+	// mount the subscription resource
+	api.use('/subscription', subscription({ config, db }))
 
 	// perhaps expose some API metadata at the root
 	api.get('/', (req, res) => {
