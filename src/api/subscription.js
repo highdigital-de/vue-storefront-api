@@ -24,6 +24,17 @@ export default ({ config }) => {
 			apiStatus(res, err, 500);
 		})
 	})
+	/** 
+	 * GET get the subscribable products
+	 */
+	subscriptionApi.get('/products', (req, res) => {
+		const subscriptionProxy = _getProxy(req)
+    subscriptionProxy.products(req.query.token).then((result) => {
+			apiStatus(res, result, 200);
+		}).catch(err => {
+			apiStatus(res, err, 500);
+		})
+	})
 
 	return subscriptionApi
 }

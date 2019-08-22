@@ -10,6 +10,8 @@ class AbstractSubscriptionProxy {
    */
   get (customerToken) {
   }
+  products () {
+  }
 
 }
 

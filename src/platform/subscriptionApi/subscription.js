@@ -9,6 +9,9 @@ class SubscriptionProxy extends AbstractSubscriptionProxy {
   get (customerToken) {
     return this.api.subscription.get(customerToken);
   }
+  products () {
+    return this.api.subscription.products();
+  }
 }
 
 module.exports = SubscriptionProxy;
