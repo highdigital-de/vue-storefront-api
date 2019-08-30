@@ -1,3 +1,18 @@
+# Notes from Valentin Seehausen
+
+## How to add a API call into bridge for subscription
+* Add method in `src/platform/subscriptionApi/subscription.js`
+* Add function in `src/platform/node_modules/subscription-api-vsclient-client/lib/subscription.js`
+* Add method in `src/api/subscription.js`
+* In General: Make sure, that endpoint is set in `config/local.json`:
+  ```
+  "subscriptionApi": {
+    "url": "https://1a6c2696-fb6b-4c82-bad6-e01b58fd7953.mock.pstmn.io",
+    "api": {
+      "url": "https://1a6c2696-fb6b-4c82-bad6-e01b58fd7953.mock.pstmn.io"
+    }
+  },
+
 REST API backend for vue-storefront
 ===================================
 
