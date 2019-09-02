@@ -35,6 +35,17 @@ export default ({ config }) => {
 			apiStatus(res, err, 500);
 		})
 	})
+	/** 
+	 * POST add product to delivery card
+	 */
+	subscriptionApi.post('/cart/delivery', (req, res) => {
+		const subscriptionProxy = _getProxy(req)
+    subscriptionProxy.cart_delivery(req.body).then((result) => {
+			apiStatus(res, result, 200);
+		}).catch(err => {
+			apiStatus(res, err, 500);
+		})
+	})
 
 	return subscriptionApi
 }

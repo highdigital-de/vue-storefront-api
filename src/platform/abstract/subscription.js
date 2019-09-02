@@ -12,7 +12,8 @@ class AbstractSubscriptionProxy {
   }
   meta () {
   }
-
+  cart_delivery (body) {
+  }
 }
 
 module.exports = AbstractSubscriptionProxy
