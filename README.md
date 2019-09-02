@@ -4,6 +4,7 @@
 * Add method in `src/platform/subscriptionApi/subscription.js`
 * Add function in `src/platform/node_modules/subscription-api-vsclient-client/lib/subscription.js`
 * Add method in `src/api/subscription.js`
+* Add method in `src/platform/abstract/subscription.js`
 * In General: Make sure, that endpoint is set in `config/local.json` and points to a working URL (add example in Postman):
   ```
   "subscriptionApi": {
