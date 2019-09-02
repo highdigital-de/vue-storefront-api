@@ -12,6 +12,10 @@ class AbstractSubscriptionProxy {
   }
   products () {
   }
+  coupons () {
+  }
+  delivery () {
+  }
 
 }
 

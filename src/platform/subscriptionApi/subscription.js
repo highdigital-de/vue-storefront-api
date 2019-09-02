@@ -15,6 +15,9 @@ class SubscriptionProxy extends AbstractSubscriptionProxy {
   coupons () {
     return this.api.subscription.coupons();
   }
+  delivery () {
+    return this.api.subscription.delivery();
+  }
 }
 
 module.exports = SubscriptionProxy;

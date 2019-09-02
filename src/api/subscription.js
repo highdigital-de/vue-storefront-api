@@ -46,6 +46,17 @@ export default ({ config }) => {
 			apiStatus(res, err, 500);
 		})
 	})
+	/** 
+	 * GET get delivery options
+	 */
+	subscriptionApi.get('/delivery', (req, res) => {
+		const subscriptionProxy = _getProxy(req)
+    subscriptionProxy.delivery(req.query.token).then((result) => {
+			apiStatus(res, result, 200);
+		}).catch(err => {
+			apiStatus(res, err, 500);
+		})
+	})
 
 	return subscriptionApi
 }
