@@ -25,33 +25,11 @@ export default ({ config }) => {
 		})
 	})
 	/** 
-	 * GET get the subscribable products
+	 * GET get meta data for subscription
 	 */
-	subscriptionApi.get('/products', (req, res) => {
+	subscriptionApi.get('/meta', (req, res) => {
 		const subscriptionProxy = _getProxy(req)
-    subscriptionProxy.products(req.query.token).then((result) => {
-			apiStatus(res, result, 200);
-		}).catch(err => {
-			apiStatus(res, err, 500);
-		})
-	})
-	/** 
-	 * GET get the coupons
-	 */
-	subscriptionApi.get('/coupons', (req, res) => {
-		const subscriptionProxy = _getProxy(req)
-    subscriptionProxy.coupons(req.query.token).then((result) => {
-			apiStatus(res, result, 200);
-		}).catch(err => {
-			apiStatus(res, err, 500);
-		})
-	})
-	/** 
-	 * GET get delivery options
-	 */
-	subscriptionApi.get('/delivery', (req, res) => {
-		const subscriptionProxy = _getProxy(req)
-    subscriptionProxy.delivery(req.query.token).then((result) => {
+    subscriptionProxy.meta(req.query.token).then((result) => {
 			apiStatus(res, result, 200);
 		}).catch(err => {
 			apiStatus(res, err, 500);

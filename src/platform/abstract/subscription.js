@@ -10,11 +10,7 @@ class AbstractSubscriptionProxy {
    */
   get (customerToken) {
   }
-  products () {
-  }
-  coupons () {
-  }
-  delivery () {
+  meta () {
   }
 
 }
