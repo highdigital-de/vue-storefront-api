@@ -6,14 +6,26 @@ class SubscriptionProxy extends AbstractSubscriptionProxy {
     super(config, req)
     this.api = SubscriptionApiClient(config.subscriptionApi.api, req);
   }
-  get (customerToken) {
-    return this.api.subscription.get(customerToken);
-  }
   meta () {
     return this.api.subscription.meta();
   }
   cart_delivery(body) {
     return this.api.subscription.cart_delivery(body);
+  }
+  paymentmethod_update(body) {
+    return this.api.subscription.paymentmethod_update(body);
+  }
+  get (body) {
+    return this.api.subscription.get(body);
+  }
+  delete(body) {
+    return this.api.subscription.delete(body);
+  }
+  delivery(body) {
+    return this.api.subscription.delivery(body);
+  }
+  update(body) {
+    return this.api.subscription.update(body);
   }
 }
 

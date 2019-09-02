@@ -8,11 +8,19 @@ class AbstractSubscriptionProxy {
    *            "result": "a7b8e47aef108a8d0731c368a603a9af" <-- subscription id
    *          }
    */
-  get (customerToken) {
-  }
   meta () {
   }
   cart_delivery (body) {
+  }
+  paymentmethod_update (body) {
+  }
+  get (body) {
+  }
+  delete (body) {
+  }
+  delivery (body) {
+  }
+  update (body) {
   }
 }
 
