@@ -14,19 +14,78 @@ class Payone extends AbstractPayone {
         //DO STUFF
         return true;
     }
-    post(body) {
-        console.log('THB: payone/post req body.bankcode', body.bankcode);
-        //TODO: Validate body
-        /*mid: '16780',
-              portalid: '2012587',
-              key: '3e94def85fc95e50086db07c48538170',
-              api_version: '3.11',
-              mode: 'test',
-              request: 'managemandate', //FIX
-              encoding: 'UTF-8', //FOX
-              aid: '17076',
-              clearingtype: 'elv',*/ //FIXES
+    preauthorization(body) {
+        console.log('THB: payone/preauthorization req body', body);
+
+
+
+
         console.log('PAYONE CONFIG:', this._config.payone);
+        var request = require("request");
+        var jmd5 = require("js-md5");
+        //console.log('jdm5: ' + jmd5 + '\n' + 'axios: ' + axios);
+        var hash = jmd5(this._config.payone.key)
+        console.log("THB: jmd5 hash:", hash)
+        let time = Date.now();
+        console.log(time);
+        let ref = jmd5(this._config.payone.mid + this._config.payone.portalid + body.bankaccount + body.bankcode + body.amount + this._config.payone.key + time).substr(0, 20)
+        var options = {
+            method: 'POST',
+            url: 'https://api.pay1.de/post-gateway/',
+            headers:
+            {
+                //'Postman-Token': '3b046af5-23b3-4389-ae9a-7ce011f41a9c',
+                //'cache-control': 'no-cache',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            form:
+            {
+                mid: this._config.payone.mid,
+                portalid: this._config.payone.portalid,
+                key: hash,
+                api_version: "3.11",
+                mode: this._config.payone.mode,
+                request: 'preauthorization',
+                encoding: 'UTF-8',
+                aid: this._config.payone.aid,
+                clearingtype: 'elv',
+                currency: body.currency, //+
+                amount: body.amount, // TODO?? Berechnen
+                reference: ref,
+                lastname: body.lastname,
+                country: body.country,
+                bankcountry: body.bankcountry,
+                bankaccount: body.bankaccount,
+                bankcode: body.bankcode,
+            }
+            //console.log(hash, hash.length)
+            //let hash = jmd5(JSON.stringify(settings.data)).substr(0,20);
+
+        };
+        console.log(options.form);
+        return new Promise(function (res) {
+            request(options, function (error, response, body) {
+                if (error) throw new Error(error)
+                console.log('THB: payone/post  body', body);
+                res({ answer: body, reference: ref, time: time })
+            });
+
+        });
+
+    }
+
+    managemandate(body) {
+        if ((body.currency === 'undefined') ||
+            (body.reference === 'undefined') ||
+            (body.lastname === 'undefined') ||
+            (body.country === 'undefined') ||
+            (body.bankcountry === 'undefined') ||
+            (body.bankaccount === 'undefined') ||
+            (body.bankcode === 'undefined')) {
+            throw new Error('Parameter(s) are undefined ' + body)
+        }
+
+        console.log('THB: payone/post req body.bankcode', body.bankcode);
         var request = require("request");
         var jmd5 = require("js-md5");
         //console.log('jdm5: ' + jmd5 + '\n' + 'axios: ' + axios);

@@ -29,8 +29,8 @@ export default ({ config }) => {
 	 */
     paymentPayoneApi.post('/managemandate', (req, res) => {
         const paymentPayone = _getProxy(req)
-        console.log('THB: payone API req.body', req.body);
-        paymentPayone.post(req.body).then((result) => {
+        console.log('THB: payone API req.body', req);
+        paymentPayone.managemandate(req.body).then((result) => {
             res.header("Access-Control-Allow-Origin", "http://localhost:3000");
             res.contentType('application/json');
             res.type('cors');
@@ -53,9 +53,10 @@ export default ({ config }) => {
 	/** 
 	 * API3
 	 */
-    paymentPayoneApi.get('/get', (req, res) => {
+    paymentPayoneApi.post('/preauthorization', (req, res) => {
         const paymentPayone = _getProxy(req)
-        paymentPayone.get(req.body).then((result) => {
+        console.log('THB: payone API req.body', req);
+        paymentPayone.preauthorization(req.body).then((result) => {
             apiStatus(res, result, 200);
         }).catch(err => {
             apiStatus(res, err, 500);
