@@ -14,12 +14,36 @@ class Payone extends AbstractPayone {
         //DO STUFF
         return true;
     }
+    creditcardcheck(body) {
+        console.log('THB: payone/creditcardcheck req body', body);
+        console.log('PAYONE CONFIG:', this._config.payone);
+        var jmd5 = require("js-md5");
+        var obj = {
+            aid: this._config.payone.aid, //
+            api_version: this._config.payone.api_version, //
+            encoding: 'UTF-8', //      .encoding +
+            mid: this._config.payone.mid, //
+            mode: this._config.payone.mode, //
+            portalid: this._config.payone.portalid, //
+            request: 'creditcardcheck', //this._config.request + 
+            responsetype: 'JSON', //this._config.responsetype +
+            storecarddata: 'yes', //this._config.storecarddata +
+            hash: ''
+        }
+        var message = obj.aid + obj.api_version + obj.encoding + obj.mid + obj.mode + obj.portalid + obj.request + obj.responsetype + obj.storecarddata + this._config.payone.key
+        console.log('THB: toHash:', message)
+        obj.hash = jmd5(message)
+        console.log('THB: Hash:', obj.hash)
+        console.log(obj)
+        return new Promise(function (res) {
+            res(obj)
+        });
+
+    }
+
+
     preauthorization(body) {
         console.log('THB: payone/preauthorization req body', body);
-
-
-
-
         console.log('PAYONE CONFIG:', this._config.payone);
         var request = require("request");
         var jmd5 = require("js-md5");
@@ -48,15 +72,36 @@ class Payone extends AbstractPayone {
                 request: 'preauthorization',
                 encoding: 'UTF-8',
                 aid: this._config.payone.aid,
-                clearingtype: 'elv',
                 currency: body.currency, //+
                 amount: body.amount, // TODO?? Berechnen
                 reference: ref,
                 lastname: body.lastname,
                 country: body.country,
+                clearingtype: 'elv', //cc oder wlt
+
+                //SEPA
+                iban: body.iban,
+                bic: body.bic,
                 bankcountry: body.bankcountry,
-                bankaccount: body.bankaccount,
-                bankcode: body.bankcode,
+
+                /*              // BBAN
+                                bankcountry: body.bankcountry,
+                                bankaccount: body.bankaccount,
+                                bankcode: body.bankcode,
+                
+                                // e-wallet
+                                walletype:'', //paypal PPE, 
+                                successurl:'',
+                                errorurl:'',
+                                backurl:'',
+                  
+                                // creditcard
+                                cardtype:'',
+                                cardexpiredate:'',
+                                pseudocardpan:''
+                                */
+
+
             }
             //console.log(hash, hash.length)
             //let hash = jmd5(JSON.stringify(settings.data)).substr(0,20);
@@ -80,8 +125,7 @@ class Payone extends AbstractPayone {
             (body.lastname === 'undefined') ||
             (body.country === 'undefined') ||
             (body.bankcountry === 'undefined') ||
-            (body.bankaccount === 'undefined') ||
-            (body.bankcode === 'undefined')) {
+            (body.iban === 'undefined')) {
             throw new Error('Parameter(s) are undefined ' + body)
         }
 
@@ -119,8 +163,8 @@ class Payone extends AbstractPayone {
                 lastname: body.lastname,
                 country: body.country,
                 bankcountry: body.bankcountry,
-                bankaccount: body.bankaccount,
-                bankcode: body.bankcode,
+                iban: body.iban,
+                bic: body.bic,
                 city: body.city
             }
 
@@ -167,7 +211,7 @@ class Payone extends AbstractPayone {
                 "city": "Berlin"
             }
         }
-
+    
         axios.defaults.withCredentials = true;
         console.log('withCredentials:', axios.defaults.withCredentials);
         axios.post(config.url, config.data, config.headers)
@@ -182,7 +226,7 @@ class Payone extends AbstractPayone {
         return new Promise(function (res, rej) {
             res('THIS IS A NICE API');
         });
-
+    
         /*new Promise(function (resolve, reject) {
             axios.postaxios.post(url, settings)
                 .then(response => {
