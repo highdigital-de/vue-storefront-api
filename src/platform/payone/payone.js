@@ -52,7 +52,7 @@ class Payone extends AbstractPayone {
         console.log("THB: jmd5 hash:", hash)
         let time = Date.now();
         console.log(time);
-        let ref = jmd5(this._config.payone.mid + this._config.payone.portalid + body.bankaccount + body.bankcode + body.amount + this._config.payone.key + time).substr(0, 20)
+        let ref = jmd5(this._config.payone.mid + this._config.payone.portalid + body.amount + this._config.payone.key + time).substr(0, 20)
         var options = {
             method: 'POST',
             url: 'https://api.pay1.de/post-gateway/',
@@ -72,41 +72,40 @@ class Payone extends AbstractPayone {
                 request: 'preauthorization',
                 encoding: 'UTF-8',
                 aid: this._config.payone.aid,
+
                 currency: body.currency, //+
                 amount: body.amount, // TODO?? Berechnen
                 reference: ref,
                 lastname: body.lastname,
                 country: body.country,
-                clearingtype: 'elv', //cc oder wlt
-
-                //SEPA
-                iban: body.iban,
-                bic: body.bic,
-                bankcountry: body.bankcountry,
-
-                /*              // BBAN
-                                bankcountry: body.bankcountry,
-                                bankaccount: body.bankaccount,
-                                bankcode: body.bankcode,
-                
-                                // e-wallet
-                                walletype:'', //paypal PPE, 
-                                successurl:'',
-                                errorurl:'',
-                                backurl:'',
-                  
-                                // creditcard
-                                cardtype:'',
-                                cardexpiredate:'',
-                                pseudocardpan:''
-                                */
-
+                clearingtype: body.clearingtype,
 
             }
-            //console.log(hash, hash.length)
-            //let hash = jmd5(JSON.stringify(settings.data)).substr(0,20);
-
         };
+        if (body.clearingtype && body.clearingtype == 'elv') {
+            options.form = {
+                ...options.form,
+                iban: body.iban,
+                bic: body.bic,
+                bankcountry: body.bankcountry
+            }
+
+        } else if (body.clearingtype == 'cc') {
+            options.form = {
+                ...options.form,
+                cardtype: body.cardtype,
+                cardexpiredate: body.cardexpiredate,
+                pseudocardpan: body.pseudocardpan
+            }
+        } else if (body.clearingtype == 'wlt') {
+            options.form = {
+                ...options.form,
+                wallettype: body.wallettype,
+                successurl: body.successurl,
+                errorurl: body.errorurl,
+                backurl: body.backurl,
+            }
+        }
         console.log(options.form);
         return new Promise(function (res) {
             request(options, function (error, response, body) {
@@ -180,70 +179,6 @@ class Payone extends AbstractPayone {
 
         });
 
-    }
-
-    /*post(body) {
-        let axios = require('axios');
-        console.log('TH:payment-payone-post')
-        //console.log(body)
-        let config = {
-            method: 'post',
-            url: "https://api.pay1.de/post-gateway/",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            data: {
-                "mid": "16780",
-                "portalid": "2012587",
-                "key": "3e94def85fc95e50086db07c48538170",
-                "api_version": "3.11",
-                "mode": "test",
-                "request": "managemandate",
-                "encoding": "UTF-8",
-                "aid": "17076",
-                "clearingtype": "elv",
-                "currency": "EUR",
-                "amount": "55555",
-                "reference": "16781",
-                "lastname": "Baier",
-                "country": "DE",
-                "bankcountry": "DE",
-                "bankaccount": "2599100003",
-                "bankcode": "12345678",
-                "city": "Berlin"
-            }
-        }
-    
-        axios.defaults.withCredentials = true;
-        console.log('withCredentials:', axios.defaults.withCredentials);
-        axios.post(config.url, config.data, config.headers)
-            .then(response => {
-                console.log('TH:axios.post response');
-                console.log('TH:-----------------------\n')
-                console.log('TH:Response from', config.url, '\n', response.data, '\n', response.status, '\n', response.statusText, '\n', response.headers, '\n', response.config);
-            }).catch(err => {
-                console.log('TH:axios.post error:')
-                console.log(err)
-            })
-        return new Promise(function (res, rej) {
-            res('THIS IS A NICE API');
-        });
-    
-        /*new Promise(function (resolve, reject) {
-            axios.postaxios.post(url, settings)
-                .then(response => {
-                    console.log('Axios', response);
-                    console.log(response.json)
-                    resolve(response);
-                }).catch(err => {
-                    console.log(err)
-                    reject(false)
-                })
-        })*/
-
-    //}
-    get(body) {
-        console.log('payment-payone-get' + body);
-
-        return true;
     }
 }
 
