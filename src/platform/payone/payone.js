@@ -69,7 +69,7 @@ class Payone extends AbstractPayone {
                 key: hash,
                 api_version: "3.11",
                 mode: this._config.payone.mode,
-                request: 'preauthorization',
+                request: 'authorization',
                 encoding: 'UTF-8',
                 aid: this._config.payone.aid,
 
@@ -104,6 +104,17 @@ class Payone extends AbstractPayone {
                 successurl: body.successurl,
                 errorurl: body.errorurl,
                 backurl: body.backurl,
+            }
+        } else if (body.clearingtype == 'sb') {
+            options.form = {
+                ...options.form,
+                onlinebanktransfertype: body.onlinebanktransfertype,
+                successurl: body.successurl,
+                errorurl: body.errorurl,
+                backurl: body.backurl,
+                iban: body.iban,
+                bic: body.bic,
+                bankcountry: body.bankcountry
             }
         }
         console.log(options.form);

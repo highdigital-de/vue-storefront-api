@@ -13,17 +13,6 @@ export default ({ config }) => {
         return factory.getAdapter(platform, 'payone')
     };
 
-	/** 
-	 * API1
-	 */
-    paymentPayoneApi.get('/meta', (req, res) => {
-        const paymentPayone = _getProxy(req)
-        paymentPayone.meta(req.query.token).then((result) => {
-            apiStatus(res, result, 200);
-        }).catch(err => {
-            apiStatus(res, err, 500);
-        })
-    })
     paymentPayoneApi.post('/creditcardcheck', (req, res) => {
         const paymentPayone = _getProxy(req)
         console.log('THB: payone creditcardcheck', req);
@@ -38,11 +27,8 @@ export default ({ config }) => {
         }).catch(err => {
             apiStatus(res, err, 500);
         })
-    })/*
+    })
 
-	/**
-	 * API2
-	 */
     paymentPayoneApi.post('/managemandate', (req, res) => {
         const paymentPayone = _getProxy(req)
         console.log('THB: payone managemandate', req);
@@ -57,18 +43,8 @@ export default ({ config }) => {
         }).catch(err => {
             apiStatus(res, err, 500);
         })
-    })/*
-    paymentPayoneApi.post('/post1', (req, res) => {
-        const paymentPayone = _getProxy(req)
-        paymentPayone.post1(req.body).then((result) => {
-            apiStatus(res, result, 200);
-        }).catch(err => {
-            apiStatus(res, err, 500);
-        })
-    })*/
-	/** 
-	 * API3
-	 */
+    })
+
     paymentPayoneApi.post('/preauthorization', (req, res) => {
         const paymentPayone = _getProxy(req)
         console.log('THB: payone preauthorization', req);
