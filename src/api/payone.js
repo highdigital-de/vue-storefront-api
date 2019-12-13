@@ -17,11 +17,11 @@ export default ({ config }) => {
         const paymentPayone = _getProxy(req)
         console.log('THB: payone creditcardcheck', req);
         paymentPayone.creditcardcheck(req.body).then((result) => {
-            res.header("Access-Control-Allow-Origin", "http://localhost:3000"); //TODO nötig?
+          /*  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); 
             res.contentType('application/json');
             res.type('cors');
             result = JSON.stringify(result)
-            //console.log('THB: payone API res', res);
+            //console.log('THB: payone API res', res);*/
             console.log('THB: payone API result:', result)
             apiStatus(res, result, 200);
         }).catch(err => {
@@ -33,12 +33,12 @@ export default ({ config }) => {
         const paymentPayone = _getProxy(req)
         console.log('THB: payone managemandate', req);
         paymentPayone.managemandate(req.body).then((result) => {
-            res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+         /*   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
             res.contentType('application/json');
             res.type('cors');
             result = JSON.stringify(result)
-            //console.log('THB: payone API res', res);
-            //console.log('THB: payone API result:', result)
+            //console.log('THB: payone API res', res);*/
+            console.log('THB: payone API result:', result)
             apiStatus(res, result, 200);
         }).catch(err => {
             apiStatus(res, err, 500);
