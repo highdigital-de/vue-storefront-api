@@ -84,6 +84,18 @@ export default ({ config }) => {
 			apiStatus(res, err, 500);
 		})
 	})
+	/** 
+	 * API12
+	 * POST create subscription
+	 */
+	subscriptionApi.post('/create', (req, res) => {
+		const subscriptionProxy = _getProxy(req)
+    subscriptionProxy.create(req.body).then((result) => {
+			apiStatus(res, result, 200);
+		}).catch(err => {
+			apiStatus(res, err, 500);
+		})
+	})
 
 	return subscriptionApi
 }

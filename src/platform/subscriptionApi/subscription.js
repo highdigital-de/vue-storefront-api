@@ -24,6 +24,9 @@ class SubscriptionProxy extends AbstractSubscriptionProxy {
   update(body) {
     return this.api.subscription.update(body);
   }
+  create(body) {
+    return this.api.subscription.create(body);
+  }
 }
 
 module.exports = SubscriptionProxy;
