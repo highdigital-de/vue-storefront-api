@@ -12,9 +12,6 @@ class SubscriptionProxy extends AbstractSubscriptionProxy {
   cart_delivery(body) {
     return this.api.subscription.cart_delivery(body);
   }
-  paymentmethod_update(body) {
-    return this.api.subscription.paymentmethod_update(body);
-  }
   get (body) {
     return this.api.subscription.get(body);
   }

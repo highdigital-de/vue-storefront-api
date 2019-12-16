@@ -37,18 +37,6 @@ export default ({ config }) => {
 		})
 	})
 	/** 
-	 * API6
-	 * Post change payment method
-	 */
-	subscriptionApi.post('/paymentmethod/update', (req, res) => {
-		const subscriptionProxy = _getProxy(req)
-    subscriptionProxy.paymentmethod_update(req.body).then((result) => {
-			apiStatus(res, result, 200);
-		}).catch(err => {
-			apiStatus(res, err, 500);
-		})
-	})
-	/** 
 	 * API7
 	 * Post get the subscription
 	 */
