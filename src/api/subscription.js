@@ -1,6 +1,8 @@
+import jwt from 'jwt-simple';
 import { apiStatus } from '../lib/util';
 import { Router } from 'express';
 import PlatformFactory from '../platform/factory';
+import user from './user'
 
 export default ({ config }) => {
 
@@ -10,6 +12,12 @@ export default ({ config }) => {
 		const platform = config.platformSubscription
 		const factory = new PlatformFactory(config, req)
 		return factory.getAdapter(platform, 'subscription')
+	};
+
+	const _getUserProxy = (req) => {
+		const platform = config.platform
+		const factory = new PlatformFactory(config, req)
+		return factory.getAdapter(platform, 'user')
 	};
 
 	/** 
@@ -41,11 +49,30 @@ export default ({ config }) => {
 	 * Post get the subscription
 	 */
 	subscriptionApi.post('/get', (req, res) => {
-		const subscriptionProxy = _getProxy(req)
-		subscriptionProxy.get(req.body).then((result) => {
-			apiStatus(res, result, 200);
+		let token = req.query.token
+		console.log('get user for token', token)
+		const userProxy = _getUserProxy(req)
+		let userId
+		userProxy.me(req.query.token).then((result) => {
+			console.log('success, authenticated', result)
+			userId = result.id
+			const body = {
+				query: {
+					customer_id: userId
+				}
+			}
+			console.log('body', body)
+			const subscriptionProxy = _getProxy(req)
+			subscriptionProxy.get(body).then((result) => {
+				console.log('got subscription result', result)
+				apiStatus(res, result, 200);
+			}).catch(err => {
+				apiStatus(res, err, 500);
+			})
 		}).catch(err => {
-			apiStatus(res, err, 500);
+			console.log('error, not authenticated', err)
+			apiStatus(res, err, 401);
+			return
 		})
 	})
 	/** 
