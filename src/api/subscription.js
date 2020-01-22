@@ -5,7 +5,7 @@ import PlatformFactory from '../platform/factory';
 export default ({ config }) => {
 
 	let subscriptionApi = Router();
-	
+
 	const _getProxy = (req) => {
 		const platform = config.platformSubscription
 		const factory = new PlatformFactory(config, req)
@@ -18,7 +18,7 @@ export default ({ config }) => {
 	 */
 	subscriptionApi.get('/meta', (req, res) => {
 		const subscriptionProxy = _getProxy(req)
-    subscriptionProxy.meta(req.query.token).then((result) => {
+		subscriptionProxy.meta(req.query.token).then((result) => {
 			apiStatus(res, result, 200);
 		}).catch(err => {
 			apiStatus(res, err, 500);
@@ -30,7 +30,7 @@ export default ({ config }) => {
 	 */
 	subscriptionApi.post('/cart/delivery', (req, res) => {
 		const subscriptionProxy = _getProxy(req)
-    subscriptionProxy.cart_delivery(req.body).then((result) => {
+		subscriptionProxy.cart_delivery(req.body).then((result) => {
 			apiStatus(res, result, 200);
 		}).catch(err => {
 			apiStatus(res, err, 500);
@@ -42,7 +42,7 @@ export default ({ config }) => {
 	 */
 	subscriptionApi.post('/get', (req, res) => {
 		const subscriptionProxy = _getProxy(req)
-    subscriptionProxy.get(req.body).then((result) => {
+		subscriptionProxy.get(req.body).then((result) => {
 			apiStatus(res, result, 200);
 		}).catch(err => {
 			apiStatus(res, err, 500);
@@ -54,7 +54,7 @@ export default ({ config }) => {
 	 */
 	subscriptionApi.post('/delete', (req, res) => {
 		const subscriptionProxy = _getProxy(req)
-    subscriptionProxy.cart_delivery(req.body).then((result) => {
+		subscriptionProxy.cart_delivery(req.body).then((result) => {
 			apiStatus(res, result, 200);
 		}).catch(err => {
 			apiStatus(res, err, 500);
@@ -66,7 +66,7 @@ export default ({ config }) => {
 	 */
 	subscriptionApi.post('/delivery', (req, res) => {
 		const subscriptionProxy = _getProxy(req)
-    subscriptionProxy.cart_delivery(req.body).then((result) => {
+		subscriptionProxy.cart_delivery(req.body).then((result) => {
 			apiStatus(res, result, 200);
 		}).catch(err => {
 			apiStatus(res, err, 500);
@@ -78,7 +78,7 @@ export default ({ config }) => {
 	 */
 	subscriptionApi.post('/update', (req, res) => {
 		const subscriptionProxy = _getProxy(req)
-    subscriptionProxy.update(req.body).then((result) => {
+		subscriptionProxy.update(req.body).then((result) => {
 			apiStatus(res, result, 200);
 		}).catch(err => {
 			apiStatus(res, err, 500);
@@ -90,7 +90,7 @@ export default ({ config }) => {
 	 */
 	subscriptionApi.post('/create', (req, res) => {
 		const subscriptionProxy = _getProxy(req)
-    subscriptionProxy.create(req.body).then((result) => {
+		subscriptionProxy.create(req.body).then((result) => {
 			apiStatus(res, result, 200);
 		}).catch(err => {
 			apiStatus(res, err, 500);
