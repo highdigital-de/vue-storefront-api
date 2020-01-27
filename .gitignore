@@ -14,3 +14,4 @@ var/magento2-sample-data/
 /docker/elasticsearch/data/
 !/docker/elasticsearch/data/.gitkeep
 !src/platform/node_modules
+!src/platform/node_modules/*
