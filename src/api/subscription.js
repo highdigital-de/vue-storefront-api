@@ -104,11 +104,30 @@ export default ({ config }) => {
 	 * POST update subscription
 	 */
 	subscriptionApi.post('/update', (req, res) => {
-		const subscriptionProxy = _getProxy(req)
-		subscriptionProxy.update(req.body).then((result) => {
-			apiStatus(res, result, 200);
+		let token = req.query.token
+		console.log('get user for token', token)
+		const userProxy = _getUserProxy(req)
+		let userId
+		userProxy.me(req.query.token).then((result) => {
+			console.log('success, authenticated', result)
+			userId = result.id
+			const body = {
+				query: {
+					...req.body,
+					customer_id: userId
+				}
+			}
+			console.log('body', body)
+			const subscriptionProxy = _getProxy(req)
+			subscriptionProxy.update(body).then((result) => {
+				apiStatus(res, result, 200);
+			}).catch(err => {
+				apiStatus(res, err, 500);
+			})
 		}).catch(err => {
-			apiStatus(res, err, 500);
+			console.log('error, not authenticated', err)
+			apiStatus(res, err, 401);
+			return
 		})
 	})
 	/** 
