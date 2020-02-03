@@ -50,27 +50,22 @@ export default ({ config }) => {
 	 */
 	subscriptionApi.post('/get', (req, res) => {
 		let token = req.query.token
-		console.log('get user for token', token)
 		const userProxy = _getUserProxy(req)
 		let userId
 		userProxy.me(req.query.token).then((result) => {
-			console.log('success, authenticated', result)
 			userId = result.id
 			const body = {
 				query: {
 					customer_id: userId
 				}
 			}
-			console.log('body', body)
 			const subscriptionProxy = _getProxy(req)
 			subscriptionProxy.get(body).then((result) => {
-				console.log('got subscription result', result)
 				apiStatus(res, result, 200);
 			}).catch(err => {
 				apiStatus(res, err, 500);
 			})
 		}).catch(err => {
-			console.log('error, not authenticated', err)
 			apiStatus(res, err, 401);
 			return
 		})
@@ -80,11 +75,28 @@ export default ({ config }) => {
 	 * POST delete subscription
 	 */
 	subscriptionApi.post('/delete', (req, res) => {
-		const subscriptionProxy = _getProxy(req)
-		subscriptionProxy.cart_delivery(req.body).then((result) => {
-			apiStatus(res, result, 200);
+		let token = req.query.token
+		console.log('get user for token', token)
+		const userProxy = _getUserProxy(req)
+		let userId
+		userProxy.me(req.query.token).then((result) => {
+			userId = result.id
+			const body = {
+				query: {
+					customer_id: userId
+				}
+			}
+			console.log('body', body)
+			const subscriptionProxy = _getProxy(req)
+			subscriptionProxy.delete(body).then((result) => {
+				apiStatus(res, result, 200);
+			}).catch(err => {
+				apiStatus(res, err, 500);
+			})
 		}).catch(err => {
-			apiStatus(res, err, 500);
+			console.log('error, not authenticated', err)
+			apiStatus(res, err, 401);
+			return
 		})
 	})
 	/** 
@@ -105,11 +117,9 @@ export default ({ config }) => {
 	 */
 	subscriptionApi.post('/update', (req, res) => {
 		let token = req.query.token
-		console.log('get user for token', token)
 		const userProxy = _getUserProxy(req)
 		let userId
 		userProxy.me(req.query.token).then((result) => {
-			console.log('success, authenticated', result)
 			userId = result.id
 			const body = {
 				query: {
@@ -117,7 +127,6 @@ export default ({ config }) => {
 					customer_id: userId
 				}
 			}
-			console.log('body', body)
 			const subscriptionProxy = _getProxy(req)
 			subscriptionProxy.update(body).then((result) => {
 				apiStatus(res, result, 200);
@@ -125,7 +134,6 @@ export default ({ config }) => {
 				apiStatus(res, err, 500);
 			})
 		}).catch(err => {
-			console.log('error, not authenticated', err)
 			apiStatus(res, err, 401);
 			return
 		})

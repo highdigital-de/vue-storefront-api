@@ -11,6 +11,7 @@ class OrderProxy extends AbstractOrderProxy {
   }
 
   create (orderData) {
+    console.log('create order', orderData)
       const inst = this
       return new Promise ((resolve, reject) => {
         try {
