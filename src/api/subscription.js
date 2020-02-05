@@ -119,7 +119,12 @@ export default ({ config }) => {
 			}
 			const subscriptionProxy = _getProxy(req)
 			subscriptionProxy.update(body).then((result) => {
-				apiStatus(res, result, 200);
+				console.log(result.success, typeof(result.success))
+				if (result.success) {
+					apiStatus(res, result, 200);
+				} else {
+					apiStatus(res, result.message, 500);
+				}
 			}).catch(err => {
 				apiStatus(res, err, 500);
 			})
