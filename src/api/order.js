@@ -68,13 +68,22 @@ export default ({ config, db }) => resource({
 			}
 		}
 
-		if (req.body.isSubscription) {
+		if (req.body.is_subscription) {
 			console.log('order is subscription')
 			console.log('user_id', req.body.user_id)
-			const subscriptionProxy = _getSubscriptionProxy(req)
-			const body = req.body
+			const subscriptionProxy = _getSubscriptionProxy(req, config)
+			const body = {
+				query: req.body
+			}
 			subscriptionProxy.create(body).then((result) => {
-				apiStatus(res, result, 200);
+				console.log('result from subscription api')
+				console.log(result)
+				console.log(result.success, typeof(result.success))
+				if (result.success) {
+					apiStatus(res, result, 200);
+				} else {
+					apiStatus(res, result, 500);
+				}
 			}).catch(err => {
 				apiStatus(res, err, 500);
 			})
