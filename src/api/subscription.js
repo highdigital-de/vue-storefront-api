@@ -49,24 +49,16 @@ export default ({ config }) => {
 	 * Post get the subscription
 	 */
 	subscriptionApi.post('/get', (req, res) => {
-		const userProxy = _getUserProxy(req)
-		let userId
-		userProxy.me(req.query.token).then((result) => {
-			userId = result.id
-			const body = {
-				query: {
-					customer_id: userId
-				}
+		const subscriptionProxy = _getProxy(req)
+		let body = {
+			query: {
+				...req.body
 			}
-			const subscriptionProxy = _getProxy(req)
-			subscriptionProxy.get(body).then((result) => {
-				apiStatus(res, result, 200);
-			}).catch(err => {
-				apiStatus(res, err, 500);
-			})
+		}
+		subscriptionProxy.get(body).then((result) => {
+			apiStatus(res, result, 200);
 		}).catch(err => {
-			apiStatus(res, err, 401);
-			return
+			apiStatus(res, err, 500);
 		})
 	})
 	/** 
