@@ -2,6 +2,7 @@ import resource from 'resource-router-middleware';
 import { apiStatus } from '../lib/util';
 import { merge } from 'lodash';
 import PlatformFactory from '../platform/factory';
+import subscription from './subscription'
 
 const Ajv = require('ajv'); // json validator
 const fs = require('fs');
@@ -15,6 +16,11 @@ const _getProxy = (req, config) => {
 	return factory.getAdapter(platform, 'order')
 };
 
+const _getSubscriptionProxy = (req, config) => {
+	const platform = config.platformSubscription
+	const factory = new PlatformFactory(config, req)
+	return factory.getAdapter(platform, 'subscription')
+};
 
 export default ({ config, db }) => resource({
 
@@ -60,6 +66,19 @@ export default ({ config, db }) => resource({
 					return;
 				}
 			}
+		}
+
+		if (req.body.isSubscription) {
+			console.log('order is subscription')
+			console.log('user_id', req.body.user_id)
+			const subscriptionProxy = _getSubscriptionProxy(req)
+			const body = req.body
+			subscriptionProxy.create(body).then((result) => {
+				apiStatus(res, result, 200);
+			}).catch(err => {
+				apiStatus(res, err, 500);
+			})
+			return
 		}
 
 		if (config.orders.useServerQueue) {

@@ -49,7 +49,6 @@ export default ({ config }) => {
 	 * Post get the subscription
 	 */
 	subscriptionApi.post('/get', (req, res) => {
-		let token = req.query.token
 		const userProxy = _getUserProxy(req)
 		let userId
 		userProxy.me(req.query.token).then((result) => {
