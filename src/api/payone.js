@@ -56,5 +56,16 @@ export default ({ config }) => {
     })
 
 
+    paymentPayoneApi.post('/updateuser', (req, res) => {
+        const paymentPayone = _getProxy(req)
+        console.log('THB: payone userupdate', req.body);
+        paymentPayone.updateuser(req.body).then((result) => {
+            apiStatus(res, result, 200);
+        }).catch(err => {
+            apiStatus(res, err, 500);
+        })
+    })
+
+
     return paymentPayoneApi
 }
